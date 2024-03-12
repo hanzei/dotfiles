@@ -1,0 +1,81 @@
+[user]
+	name = Ben Schumacher
+	email = ben.schumacher@mattermost.com
+	signingkey = /home/bschumacher/.ssh/github_hanzei.pub
+[core]
+	editor = gedit
+	autocrlf = input
+	excludesfile = ~/.gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[push]
+	default = simple
+[fetch]
+	prune = true
+[color]
+	ui = true
+[merge]
+	tool = meld
+	#conflictstyle = diff3
+[commit]
+	#gpgsign = true
+[alias]
+  co    = checkout
+  sw    = switch
+  swm   = switch master
+  swc   = switch -c		
+  ci    = commit
+  cim   = commit -m
+  ciam  = commit -a -m
+  st    = status
+  s     = status
+  br    = branch
+  bb    = "! $HOME/bin/better-git-branch.sh"
+  hist  = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+  histl = log --stat --abbrev-commit
+  last  = log -1 HEAD
+  type  = cat-file -t
+  dump  = cat-file -p
+  number-of-commits = shortlog -sn
+  fast-forward = merge -s ours --ff
+# new-branche = "!f() { git checkout -b $1 && git push --set-upstream origin  $1; }; f"
+
+# FIX THIS
+#keks = "!git branch --merged | grep -v "\*" | grep -v "master" | grep -v "develop" | grep -v "release" | xargs -n 1 git branch -d"
+#purgebranchlist = "!f() { git branch --merged | grep -v "\*" | grep -v "master" | grep -v "develop" | grep -v "release" | xargs -n 1 git branch -d ;}; f"
+
+# Pull all submodules
+updatesubmodules = "!git submodule foreach git pull origin master"
+
+# Get the current branch name (not so useful in itself, but used in other aliases)
+branch-name = "!git rev-parse --abbrev-ref HEAD"
+
+# Push the current branch to the remote "origin", and set it to track the upstream branch
+publish = "!git push -u origin $(git branch-name)"
+fork-publish = "!git push -u fork $(git branch-name)"
+
+# Delete the remote version of the current branch
+unpublish = "!git push origin :$(git branch-name)"
+
+# Fire up your difftool (e.g. Kaleidescope) with all the changes that are on the current branch.
+code-review = difftool origin/master...
+
+# Interactively rebase all the commits on the current branch
+rebase-branch = "!git rebase -i `git merge-base master HEAD`"
+
+[pull]
+	ff = only
+[http]
+	cookiefile = /home/sumacheb/.gitcookies
+[url "ssh://git@"]
+	insteadOf = git://
+
+[diff]
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+[gpg]
+	format = ssh
+[blame]
+	#ignoreRevsFile = .git-blame-ignore-revs
+[rerere]
+	enabled = true
