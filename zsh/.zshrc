@@ -158,7 +158,7 @@ alias vi="vim"
 
 # Mattermost dev
 export MM_DEBUG=true
-export ENABLED_DOCKER_SERVICES="mysql postgres inbucket prometheus grafana openldap keycloak"
+export ENABLED_DOCKER_SERVICES="mysql postgres inbucket prometheus grafana openldap"
 export MM_ENABLE_CWS_MOCK=true
 export MM_LIVE_RELOAD=true
 export MM_SERVICESETTINGS_ENABLEDEVELOPER=true
@@ -186,6 +186,8 @@ alias mod_replace_server="go mod edit -replace github.com/mattermost/mattermost/
 alias mod_replace_public="go mod edit -replace github.com/mattermost/mattermost/server/public=$HOME/src/mattermost/mattermost/server/public"
 alias mod_replace_plugin-api="go mod edit -replace github.com/mattermost/mattermost-plugin-api=$HOME/src/mattermost/plugins/api"
 
+# Mattermost Postgress
+alias psql_mm="psql postgres://mmuser:mostest@localhost/mattermost_test"
 
 # mmctl
 . <(mmctl completion zsh)
