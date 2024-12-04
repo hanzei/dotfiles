@@ -70,7 +70,7 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git golang github npm nvm)
+plugins=(z fzf git golang github npm nvm)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -149,6 +149,7 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+#alias go=go1.22.7
 
 # Python
 export PATH=$PATH:$HOME/.local/bin
@@ -158,7 +159,7 @@ alias vi="vim"
 
 # Mattermost dev
 export MM_DEBUG=true
-export ENABLED_DOCKER_SERVICES="mysql postgres inbucket prometheus grafana openldap"
+export ENABLED_DOCKER_SERVICES="postgres mysql inbucket prometheus grafana openldap keycloak elasticsearch redis"
 export MM_ENABLE_CWS_MOCK=true
 export MM_LIVE_RELOAD=true
 export MM_SERVICESETTINGS_ENABLEDEVELOPER=true
@@ -181,6 +182,7 @@ alias mrs_ngrok="MM_SERVICESETTINGS_SITEURL=https://hanzei.eu.ngrok.io make run-
 alias mrse="BUILD_ENTERPRISE=true make run-server"
 export BUILD_ENTERPRISE=true
 export MM_SERVER_PATH="$HOME/src/mattermost/mattermost/server"
+export CONFIG_FILE_PATH="$HOME/src/mattermost/mattermost/config/config.json"
 
 alias mod_replace_server="go mod edit -replace github.com/mattermost/mattermost/v8=$HOME/src/mattermost/mattermost"
 alias mod_replace_public="go mod edit -replace github.com/mattermost/mattermost/server/public=$HOME/src/mattermost/mattermost/server/public"
@@ -191,7 +193,12 @@ alias psql_mm="psql postgres://mmuser:mostest@localhost/mattermost_test"
 
 # mmctl
 . <(mmctl completion zsh)
+. <(pluginops completion zsh)
 
 # Volta
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+# aider
+export OLLAMA_API_BASE=http://127.0.0.1:11434
+

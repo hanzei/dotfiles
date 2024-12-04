@@ -3,7 +3,7 @@
 	email = ben.schumacher@mattermost.com
 	signingkey = /home/bschumacher/.ssh/github_hanzei.pub
 [core]
-	editor = gedit
+	editor = gnome-text-editor
 	autocrlf = input
 	excludesfile = ~/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
@@ -79,3 +79,6 @@ rebase-branch = "!git rebase -i `git merge-base master HEAD`"
 	#ignoreRevsFile = .git-blame-ignore-revs
 [rerere]
 	enabled = true
+[maintenance]
+	repo = /home/bschumacher/src/mattermost/mattermost
+	repo = /home/bschumacher/src/mattermost/enterprise
