@@ -159,13 +159,14 @@ alias vi="vim"
 
 # Mattermost dev
 export MM_DEBUG=true
-export ENABLED_DOCKER_SERVICES="postgres mysql inbucket prometheus grafana openldap keycloak elasticsearch redis"
+export ENABLED_DOCKER_SERVICES="postgres inbucket prometheus grafana openldap elasticsearch redis mysql"
 export MM_ENABLE_CWS_MOCK=true
 export MM_LIVE_RELOAD=true
 export MM_SERVICESETTINGS_ENABLEDEVELOPER=true
 #export MM_FEATUREFLAGS_AppsEnabled=true
 export MM_FEATUREFLAGS_USECASEONBOARDING=true
-export MM_SERVICESETTINGS_SITEURL=http://localhost:8065
+#export MM_SERVICESETTINGS_SITEURL=http://localhost:8065
+export MM_LOCALSOCKETPATH=/var/tmp/mattermost_local.socket
 
 alias mp="cd $HOME/src/matterpoll/matterpoll"
 alias mm="cd $HOME/src/mattermost"
@@ -202,3 +203,23 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 # aider
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
+
+# bun completions
+[ -s "/home/bschumacher/.bun/_bun" ] && source "/home/bschumacher/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/home/bschumacher/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+
+autoload -U compinit; compinit
+autoload -U compinit; compinit
+alias claude="/home/bschumacher/.claude/local/claude"
