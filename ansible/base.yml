@@ -3,3 +3,7 @@
 - import_playbook: utils.yml
 - import_playbook: edge.yml
 - import_playbook: docker.yml
+- import_playbook: dotfiles.yml
+- import_playbook: syncthing.yml
+- import_playbook: intune.yml
+- import_playbook: vs-code.yml
