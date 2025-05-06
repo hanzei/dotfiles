@@ -5,34 +5,34 @@
   vars:
     syncthing_keyring_path: /etc/apt/keyrings/syncthing-archive-keyring.gpg
   tasks:
-  - name: Ensure APT dependencies are installed
-    apt:
-      name:
-      - curl
-      - gnupg
-      - apt-transport-https
-      state: present
+    - name: Ensure APT dependencies are installed
+      ansible.builtin.apt:
+        name:
+          - curl
+          - gnupg
+          - apt-transport-https
+        state: present
 
-  - name: Create keyring directory
-    file:
-      path: /etc/apt/keyrings
-      state: directory
-      mode: '0755'
+    - name: Create keyring directory
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
 
-  - name: Download Syncthing GPG key
-    get_url:
-      url: https://syncthing.net/release-key.gpg
-      dest: "{{ syncthing_keyring_path }}"
-      mode: '0644'
+    - name: Download Syncthing GPG key
+      ansible.builtin.get_url:
+        url: https://syncthing.net/release-key.gpg
+        dest: "{{ syncthing_keyring_path }}"
+        mode: '0644'
 
-  - name: Add Syncthing APT repository
-    apt_repository:
-      repo: "deb [signed-by={{ syncthing_keyring_path }}] https://apt.syncthing.net/ syncthing stable"
-      filename: syncthing
-      state: present
+    - name: Add Syncthing APT repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by={{ syncthing_keyring_path }}] https://apt.syncthing.net/ syncthing stable"
+        filename: syncthing
+        state: present
 
-  - name: Install Syncthing package
-    apt:
-      name: syncthing
-      state: present
-      update_cache: true
+    - name: Install Syncthing package
+      ansible.builtin.apt:
+        name: syncthing
+        state: present
+        update_cache: true

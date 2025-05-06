@@ -4,10 +4,10 @@
   connection: local
   become: true
   tasks:
-  - name: Ensure basic packages are installed
-    package:
-      name:
-      - git
-      - curl
-      - wget
-      state: present
+    - name: Ensure basic packages are installed
+      ansible.builtin.package:
+        name:
+          - git
+          - curl
+          - wget
+        state: present

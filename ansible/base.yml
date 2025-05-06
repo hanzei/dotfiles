@@ -1,9 +1,18 @@
-- import_playbook: flatpak.yml
-- import_playbook: development.yml
-- import_playbook: utils.yml
-- import_playbook: edge.yml
-- import_playbook: docker.yml
-- import_playbook: dotfiles.yml
-- import_playbook: syncthing.yml
-- import_playbook: intune.yml
-- import_playbook: vs-code.yml
+- name: "Flatpak"
+  import_playbook: flatpak.yml
+- name: "Development Tools"
+  import_playbook: development.yml
+- name: "Utils"
+  import_playbook: utils.yml
+- name: "Edge"
+  import_playbook: edge.yml
+- name: "Docker"
+  import_playbook: docker.yml
+- name: "Dotfiles"
+  import_playbook: dotfiles.yml
+- name: "Syncthing"
+  import_playbook: syncthing.yml
+- name: "Intune"
+  import_playbook: intune.yml
+- name: "VS Code"
+  import_playbook: vs-code.yml

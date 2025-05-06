@@ -4,10 +4,11 @@
   connection: local
   become: true
   tasks:
-  - name: Ensure basic diagnotic tools are installed
-    package:
-      name:
-      - htop
-      - vim
-      - nmap
-      state: present
+    - name: Ensure basic diagnotic tools are installed
+      ansible.builtin.package:
+        name:
+          - htop
+          - vim
+          - nmap
+          - ansible-lint
+        state: present

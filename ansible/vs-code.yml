@@ -1,25 +1,24 @@
----
 - name: Install VS Code
   hosts: localhost
   connection: local
   become: true
   tasks:
-  - name: Add Microsoft GPG key
-    apt_key:
-      url: https://packages.microsoft.com/keys/microsoft.asc
-      state: present
+    - name: Add Microsoft GPG key
+      ansible.builtin.apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
 
-  - name: Add VS Code repository
-    apt_repository:
-      repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
-      filename: vscode
-      state: present
+    - name: Add VS Code repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+        filename: vscode
+        state: present
 
-  - name: Install VS Code
-    apt:
-      name: code
-      state: present
-      update_cache: true
+    - name: Install VS Code
+      ansible.builtin.apt:
+        name: code
+        state: present
+        update_cache: true
 - name: Install VS Code configuration
   hosts: localhost
   connection: local
@@ -37,26 +36,47 @@
       - redhat.vscode-xml
       - redhat.vscode-yaml
       - shuworks.vscode-table-formatter
+      - redhat.ansible
+      - ms-python.vscode-pylance # for Ansible
+      - ms-python.python # for Ansible
   tasks:
-  - name: Install extension {{ item }}
-    command: code --install-extension {{ item }} --force
-    loop: "{{ vscode_extensions }}"
-  - name: Ensure VS Code config directory exists
-    file:
-      path: "{{ ansible_env.HOME }}/.config/Code/User"
-      state: directory
-      mode: '0755'
+    - name: Get list of currently installed VS Code extensions
+      ansible.builtin.command: code --list-extensions
+      register: current_extensions
+      changed_when: false
 
-  - name: Symlink VS Code settings.json
-    file:
-      src: "{{ ansible_env.HOME }}/dotfiles/vscode/settings.json"
-      dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
-      state: link
-      force: true
+    - name: Set list of extensions to remove
+      ansible.builtin.set_fact:
+        vscode_extensions_to_remove: "{{ current_extensions.stdout_lines | difference(vscode_extensions) }}"
 
-  - name: Symlink VS Code keybindings.json
-    file:
-      src: "{{ ansible_env.HOME }}/dotfiles/vscode/keybindings.json"
-      dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
-      state: link
-      force: true
+    - name: Uninstall unapproved extensions
+      ansible.builtin.command: code --uninstall-extension {{ item }} --force
+      loop: "{{ vscode_extensions_to_remove }}"
+      when: vscode_extensions_to_remove | length > 0
+      changed_when: true
+
+    - name: Install approved VS Code extensions
+      ansible.builtin.command: code --install-extension {{ item }} --force
+      register: result
+      changed_when: "'already installed' not in result.stdout"
+      loop: "{{ vscode_extensions }}"
+
+    - name: Ensure VS Code config directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.config/Code/User"
+        state: directory
+        mode: '0755'
+
+    - name: Symlink VS Code settings.json
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/dotfiles/vscode/settings.json"
+        dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+        state: link
+        force: true
+
+    - name: Symlink VS Code keybindings.json
+      ansible.builtin.file:
+        src: "{{ ansible_env.HOME }}/dotfiles/vscode/keybindings.json"
+        dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
+        state: link
+        force: true
