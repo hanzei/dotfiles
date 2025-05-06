@@ -1,0 +1,21 @@
+- name: Install Microsoft Edge on Ubuntu
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+  - name: Add Microsoft GPG key
+    apt_key:
+      url: https://packages.microsoft.com/keys/microsoft.asc
+      state: present
+
+  - name: Add Microsoft Edge repository
+    apt_repository:
+      repo: deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main
+      state: present
+      filename: microsoft-edge
+
+  - name: Install Microsoft Edge
+    apt:
+      name: microsoft-edge-stable
+      state: present
+      update_cache: yes

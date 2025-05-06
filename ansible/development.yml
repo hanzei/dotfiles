@@ -1,0 +1,13 @@
+---
+- name: Install development tools
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+  - name: Ensure basic packages are installed
+    package:
+      name:
+      - git
+      - curl
+      - wget
+      state: present

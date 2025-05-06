@@ -1,0 +1,11 @@
+---
+- name: Install tool
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+  - name: Ensure basic diagnotic tools are installed
+    package:
+      name:
+      - htop
+      state: present

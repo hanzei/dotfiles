@@ -1,0 +1,27 @@
+---
+- name: Setup Spotify with Flatpak
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+  - name: Ensure Flatpak is installed
+    package:
+      name: flatpak
+      state: present
+
+  - name: Add Flathub remote if not present
+    command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    args:
+      creates: /var/lib/flatpak/repo/refs/remotes/flathub
+
+  - name: Install Spotify via Flatpak
+    community.general.flatpak:
+      name: com.spotify.Client
+      state: present
+      remote: flathub
+
+  - name: Install Firefox via Flatpak
+    community.general.flatpak:
+      name: org.mozilla.firefox
+      state: present
+      remote: flathub
