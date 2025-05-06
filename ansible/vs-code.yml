@@ -2,15 +2,20 @@
   hosts: localhost
   connection: local
   become: true
+  vars:
+    ms_repo_keyring_path: /etc/apt/keyrings/microsoft.gpg
   tasks:
-    - name: Add Microsoft GPG key
-      ansible.builtin.apt_key:
+    - name: Download Microsoft GPG key to secure keyring
+      ansible.builtin.get_url:
         url: https://packages.microsoft.com/keys/microsoft.asc
-        state: present
+        dest: "{{ ms_repo_keyring_path }}"
+        mode: '0644'
+    # TODO: This might be wrong. Do we need to install the keyring?
+    # https://code.visualstudio.com/docs/setup/linux
 
     - name: Add VS Code repository
       ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+        repo: "deb [arch=amd64] https://packages.microsoft.com/repos/code stable main"
         filename: vscode
         state: present
 
@@ -19,6 +24,7 @@
         name: code
         state: present
         update_cache: true
+
 - name: Install VS Code configuration
   hosts: localhost
   connection: local

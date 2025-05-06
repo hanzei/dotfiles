@@ -3,15 +3,18 @@
   hosts: localhost
   connection: local
   become: true
+  vars:
+    ms_repo_keyring_path: /etc/apt/keyrings/docker.asc
   tasks:
     - name: Add Docker GPG key
-      ansible.builtin.apt_key:
+      ansible.builtin.get_url:
         url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
+        dest: "{{ ms_repo_keyring_path }}"
+        mode: '0644'        
 
     - name: Add Docker repository
       ansible.builtin.apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+        repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
         state: present
 
     - name: Install Docker packages

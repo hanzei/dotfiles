@@ -3,17 +3,8 @@
   connection: local
   become: true
   vars:
-    ms_repo_keyring_path: /usr/share/keyrings/microsoft.gpg
+    ms_repo_keyring_path: /etc/apt/keyrings/microsoft.gpg
   tasks:
-    - name: Ensure required packages are installed
-      ansible.builtin.apt:
-        name:
-          - curl
-          - ca-certificates
-          - gnupg
-          - apt-transport-https
-        state: present
-
     - name: Download Microsoft GPG key to secure keyring
       ansible.builtin.get_url:
         url: https://packages.microsoft.com/keys/microsoft.asc
@@ -22,7 +13,7 @@
 
     - name: Add Microsoft Intune repository with signed-by
       ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64 signed-by={{ ms_repo_keyring_path }}] https://packages.microsoft.com/ubuntu/24.04/prod noble main"
+        repo: "deb [arch=amd64] https://packages.microsoft.com/ubuntu/24.04/prod noble main"
         filename: microsoft-intune
         state: present
 
