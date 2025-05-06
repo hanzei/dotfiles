@@ -1,0 +1,62 @@
+---
+- name: Install VS Code
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+  - name: Add Microsoft GPG key
+    apt_key:
+      url: https://packages.microsoft.com/keys/microsoft.asc
+      state: present
+
+  - name: Add VS Code repository
+    apt_repository:
+      repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+      filename: vscode
+      state: present
+
+  - name: Install VS Code
+    apt:
+      name: code
+      state: present
+      update_cache: true
+- name: Install VS Code configuration
+  hosts: localhost
+  connection: local
+  become: false
+  vars:
+    vscode_extensions:
+      - bierner.markdown-mermaid
+      - eamodio.gitlens
+      - github.copilot
+      - github.copilot-chat
+      - github.vscode-github-actions
+      - github.vscode-pull-request-github
+      - golang.go
+      - mechatroner.rainbow-csv
+      - redhat.vscode-xml
+      - redhat.vscode-yaml
+      - shuworks.vscode-table-formatter
+  tasks:
+  - name: Install extension {{ item }}
+    command: code --install-extension {{ item }} --force
+    loop: "{{ vscode_extensions }}"
+  - name: Ensure VS Code config directory exists
+    file:
+      path: "{{ ansible_env.HOME }}/.config/Code/User"
+      state: directory
+      mode: '0755'
+
+  - name: Symlink VS Code settings.json
+    file:
+      src: "{{ ansible_env.HOME }}/dotfiles/vscode/settings.json"
+      dest: "{{ ansible_env.HOME }}/.config/Code/User/settings.json"
+      state: link
+      force: true
+
+  - name: Symlink VS Code keybindings.json
+    file:
+      src: "{{ ansible_env.HOME }}/dotfiles/vscode/keybindings.json"
+      dest: "{{ ansible_env.HOME }}/.config/Code/User/keybindings.json"
+      state: link
+      force: true

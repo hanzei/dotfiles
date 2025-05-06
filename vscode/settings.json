@@ -1,0 +1,20 @@
+{
+    "editor.largeFileOptimizations": false,
+    "workbench.startupEditor": "none",
+    "go.toolsManagement.autoUpdate": true,
+    "go.testFlags": [
+        "-race",
+        "-v"
+    ],
+    "go.testTimeout": "600s",
+    "githubPullRequests.pullBranch": "never",
+    "editor.minimap.enabled": false,
+    "gitlens.advanced.messages": {
+        "suppressIntegrationRequestTimedOutWarning": true
+    },
+    "gitlens.launchpad.indicator.enabled": false,
+    "gitlens.launchpad.indicator.polling.interval": 0,
+    "redhat.telemetry.enabled": false,
+    "explorer.confirmDelete": false,
+    "githubPullRequests.fileListLayout": "flat"
+}
