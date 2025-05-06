@@ -8,7 +8,7 @@
     dotfiles_map:
       - src: git/.gitconfig
         dest: "{{ ansible_env.HOME }}/.gitconfig"
-      - src: git/ .gitignore_global
+      - src: git/.gitignore_global
         dest: "{{ ansible_env.HOME }}/.gitignore_global"
       - src: zsh/.zshrc
         dest: "{{ ansible_env.HOME }}/.zshrc"
